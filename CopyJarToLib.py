@@ -4,8 +4,7 @@ import re
 import argparse
 import platform
 import shutil
- 
-path ='F:\\Knownsec\\Environment\\WebLogic\\WebLogic_Home\\12.2.1.4.0'
+
 
 JarRegex = re.compile( r'^.*\.jar$' )
 
@@ -59,7 +58,7 @@ def mkdir(path):
 
 def get_filelist(dir):
     Filelist = []
-    for home, dirs, files in os.walk(path):
+    for home, dirs, files in os.walk(dir):
         for filename in files: 
             # 文件名列表，包含完整路径 
             if re.findall(JarRegex,filename):
