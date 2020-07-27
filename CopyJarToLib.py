@@ -29,7 +29,15 @@ class CopyJar():
             print("[INFO]: Start copy jar file ...")
             if mkdir(self.copy_path):
                 for file in Filelist:
-                    shutil.copy(file, self.copy_path)
+                    name = os.path.basename(file)
+                    if not os.path.exists(os.path.join(self.copy_path, name)):
+                        shutil.copy(file, self.copy_path)
+                    else:
+                        base, ext = os.path.splitext(name)
+                        i = 1
+                        while os.path.exists(os.path.join(self.copy_path, '{}_{}{}'.format(base, i, ext))):
+                            i += 1
+                        shutil.copy(file, os.path.join(self.copy_path, '{}_{}{}'.format(base, i, ext)))
                 print("[INFO]: All done")
         except Exception as e:
             print("[ERROR]: " + str(e))
@@ -62,12 +70,13 @@ def get_filelist(dir):
         for filename in files: 
             # 文件名列表，包含完整路径 
             if re.findall(JarRegex,filename):
-                Filelist.append(os.path.join(home, filename)) 
+                filename = os.path.join(home, filename)
+                Filelist.append(filename) 
                 # 文件名列表，只包含文件名 
                 # Filelist.append(filename) 
 
     return Filelist
- 
+
 if __name__ =="__main__":
     if len(sys.argv) == 1:
         sys.argv.append('-h')
